@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Pub Golf Theme - Coral and Cream */
+    --background: 42 45% 92%;
+    --foreground: 25 25% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 25 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 25 25% 15%;
+
+    --primary: 12 70% 75%;
+    --primary-foreground: 25 25% 15%;
+
+    --secondary: 12 55% 70%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 42 35% 85%;
+    --muted-foreground: 25 15% 45%;
+
+    --accent: 180 50% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 12 40% 85%;
+    --input: 0 0% 100%;
+    --ring: 12 70% 75%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 25 25% 15%;
+    --foreground: 42 45% 92%;
+
+    --card: 25 20% 20%;
+    --card-foreground: 42 45% 92%;
+
+    --popover: 25 20% 20%;
+    --popover-foreground: 42 45% 92%;
+
+    --primary: 12 70% 65%;
+    --primary-foreground: 25 25% 15%;
+
+    --secondary: 12 45% 50%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 25 15% 30%;
+    --muted-foreground: 42 25% 65%;
+
+    --accent: 180 45% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 25 20% 30%;
+    --input: 25 20% 25%;
+    --ring: 12 70% 65%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
