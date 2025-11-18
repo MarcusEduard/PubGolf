@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -27,16 +27,50 @@ export const ScoreCard = ({ teamId, teamName, onLogout }: ScoreCardProps) => {
   const [loading, setLoading] = useState(true);
 
   const holes = [
-    { number: 1, pub: "Die Kleine Bierstube", drink: "Fadøl", par: 3 },
-    { number: 2, pub: "Kurts mor", drink: "Vodka Juice", par: 2 },
-    { number: 3, pub: "Bodegaen", drink: "Aarhus bomb", par: 2 },
-    { number: 4, pub: "Thorkilds", drink: "Long Island", par: 3 },
-    { number: 5, pub: "Snevringen", drink: "dåse øl", par: 2 },
-    { number: 6, pub: "Tanken", drink: "Pickle shot", par: 1 },
-    { number: 7, pub: "Tokio bar", drink: "Valgri genstand (ikke shots)", par: 2 },
-    { number: 8, pub: "Vinstuen", drink: "Æselspark", par: 1 },
-    { number: 9, pub: "Sherlock Holmnes", drink: "Guiness", par: 3 },
+    { number: 1, pub: "Die Kleine Bierstube", drink: "Fadøl", par: 3, special: null },
+    { number: 2, pub: "Kurts mor", drink: "Vodka Juice", par: 2, special: "water-hazard" },
+    { number: 3, pub: "Bodegaen", drink: "Aarhus bomb", par: 2, special: "strips" },
+    { number: 4, pub: "Thorkilds", drink: "Long Island", par: 3, special: "water-hazard" },
+    { number: 5, pub: "Snevringen", drink: "dåse øl", par: 2, special: "øl-staffet" },
+    { number: 6, pub: "Tanken", drink: "Pickle shot", par: 1, special: "water-hazard" },
+    { number: 7, pub: "Tokio bar", drink: "Valgri genstand (ikke shots)", par: 2, special: "quiz" },
+    { number: 8, pub: "Vinstuen", drink: "Æselspark", par: 1, special: "water-hazard" },
+    { number: 9, pub: "Sherlock Holmnes", drink: "Guiness", par: 3, special: "split-the-g" },
   ];
+
+  const getSpecialIcon = (special: string | null) => {
+    switch (special) {
+      case "water-hazard":
+        return "";
+      case "quiz":
+        return "";
+      case "strips":
+        return "";
+      case "øl-staffet":
+        return "";
+      case "split-the-g":
+        return "";
+      default:
+        return null;
+    }
+  };
+
+  const getSpecialText = (special: string | null) => {
+    switch (special) {
+      case "water-hazard":
+        return "Water Hazard";
+      case "quiz":
+        return "Quiz";
+      case "strips":
+        return "Strips";
+      case "øl-staffet":
+        return "Øl-staffet";
+      case "split-the-g":
+        return "Split the G";
+      default:
+        return null;
+    }
+  };
 
   useEffect(() => {
     loadPlayersAndScores();
@@ -177,43 +211,61 @@ export const ScoreCard = ({ teamId, teamName, onLogout }: ScoreCardProps) => {
           <TabsContent value="input" className="mt-0">
             {/* Mobile Card View */}
             <div className="block lg:hidden space-y-4">
-              {holes.map((hole) => (
-                <Card key={hole.number} className="border-2">
-                  <CardHeader className="pb-3">
-                    <div className="flex items-start justify-between">
-                      <div>
-                        <CardTitle className="text-lg flex items-center gap-2">
-                          Hul {hole.number}
-                          <span className="text-sm font-normal text-muted-foreground">
-                            Par {hole.par}
-                          </span>
-                        </CardTitle>
-                        <CardDescription className="text-base font-semibold text-foreground mt-1">
-                          {hole.pub}
-                        </CardDescription>
-                        <p className="text-sm text-muted-foreground">{hole.drink}</p>
+              {holes.map((hole, index) => (
+                <>
+                  {hole.number === 5 && (
+                    <Card className="border-2 border-blue-500 bg-blue-50 dark:bg-blue-950/20">
+                      <CardContent className="py-4 text-center">
+                        <p className="text-lg font-bold text-blue-600 dark:text-blue-400">PAUSE</p>
+                        <p className="text-sm text-muted-foreground mt-1">Tag en pause før næste runde</p>
+                      </CardContent>
+                    </Card>
+                  )}
+                  <Card key={hole.number} className={`border-2 ${hole.special ? 'border-amber-500' : ''}`}>
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <CardTitle className="text-lg flex items-center gap-2">
+                            Hul {hole.number}
+                            <span className="text-sm font-normal text-muted-foreground">
+                              Par {hole.par}
+                            </span>
+                            {hole.special && (
+                              <span className="text-lg">{getSpecialIcon(hole.special)}</span>
+                            )}
+                          </CardTitle>
+                          <CardDescription className="text-base font-semibold text-foreground mt-1">
+                            {hole.pub}
+                          </CardDescription>
+                          <p className="text-sm text-muted-foreground">{hole.drink}</p>
+                          {hole.special && (
+                            <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 mt-2">
+                              {getSpecialText(hole.special)}
+                            </p>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-3">
-                    {players.map(player => (
-                      <div key={player.id} className="flex items-center justify-between">
-                        <Label htmlFor={`${player.id}-${hole.number}`} className="text-base">
-                          {player.name}
-                        </Label>
-                        <Input
-                          id={`${player.id}-${hole.number}`}
-                          type="number"
-                          min="0"
-                          className="w-20 text-center text-lg font-semibold"
-                          value={scores[player.id]?.[hole.number] || ""}
-                          onChange={(e) => updateScore(player.id, hole.number, e.target.value)}
-                          placeholder="0"
-                        />
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                      {players.map(player => (
+                        <div key={player.id} className="flex items-center justify-between">
+                          <Label htmlFor={`${player.id}-${hole.number}`} className="text-base">
+                            {player.name}
+                          </Label>
+                          <Input
+                            id={`${player.id}-${hole.number}`}
+                            type="number"
+                            min="0"
+                            className="w-20 text-center text-lg font-semibold"
+                            value={scores[player.id]?.[hole.number] || ""}
+                            onChange={(e) => updateScore(player.id, hole.number, e.target.value)}
+                            placeholder="0"
+                          />
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                </>
               ))}
               
               {/* Total Score Card */}
@@ -250,24 +302,37 @@ export const ScoreCard = ({ teamId, teamName, onLogout }: ScoreCardProps) => {
                 </thead>
                 <tbody>
                   {holes.map((hole) => (
-                    <tr key={hole.number} className="border-b border-border hover:bg-muted/50">
-                      <td className="p-2 font-medium text-foreground">{hole.number}</td>
-                      <td className="p-2 text-foreground">{hole.pub}</td>
-                      <td className="p-2 text-muted-foreground">{hole.drink}</td>
-                      <td className="p-2 text-center text-foreground">{hole.par}</td>
-                      {players.map(player => (
-                        <td key={player.id} className="p-2">
-                          <Input
-                            type="number"
-                            min="0"
-                            className="w-16 text-center mx-auto"
-                            value={scores[player.id]?.[hole.number] || ""}
-                            onChange={(e) => updateScore(player.id, hole.number, e.target.value)}
-                            placeholder="0"
-                          />
-                        </td>
-                      ))}
-                    </tr>
+                    <React.Fragment key={hole.number}>
+                      {hole.number === 5 && (
+                        <tr>
+                          <td colSpan={4 + players.length} className="p-0">
+                            <div className="bg-blue-50 dark:bg-blue-950 border-y-2 border-blue-500 p-3 text-center">
+                              <span className="text-2xl mr-2"></span>
+                              <span className="font-bold text-blue-700 dark:text-blue-300">PAUSE</span>
+                              <span className="text-2xl ml-2"></span>
+                            </div>
+                          </td>
+                        </tr>
+                      )}
+                      <tr className="border-b border-border hover:bg-muted/50">
+                        <td className="p-2 font-medium text-foreground">{hole.number}</td>
+                        <td className="p-2 text-foreground">{hole.pub}</td>
+                        <td className="p-2 text-muted-foreground">{hole.drink}</td>
+                        <td className="p-2 text-center text-foreground">{hole.par}</td>
+                        {players.map(player => (
+                          <td key={player.id} className="p-2">
+                            <Input
+                              type="number"
+                              min="0"
+                              className="w-16 text-center mx-auto"
+                              value={scores[player.id]?.[hole.number] || ""}
+                              onChange={(e) => updateScore(player.id, hole.number, e.target.value)}
+                              placeholder="0"
+                            />
+                          </td>
+                        ))}
+                      </tr>
+                    </React.Fragment>
                   ))}
                   <tr className="bg-primary/10 font-bold border-t-2 border-primary">
                     <td colSpan={3} className="p-3 text-right text-foreground">Total:</td>
@@ -290,28 +355,49 @@ export const ScoreCard = ({ teamId, teamName, onLogout }: ScoreCardProps) => {
               {holes.map((hole) => {
                 const teamScore = calculateTeamScoreForHole(hole.number);
                 return (
-                  <Card key={hole.number} className="border-2">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <CardTitle className="text-lg flex items-center gap-2">
-                            Hul {hole.number}
-                            <span className="text-sm font-normal text-muted-foreground">
-                              Par {hole.par}
-                            </span>
+                  <React.Fragment key={hole.number}>
+                    {hole.number === 5 && (
+                      <Card className="border-2 border-blue-500 bg-blue-50 dark:bg-blue-950">
+                        <CardHeader className="pb-3 pt-3">
+                          <CardTitle className="text-center text-blue-700 dark:text-blue-300">
+                            <span className="text-2xl mr-2"></span>
+                            PAUSE
+                            <span className="text-2xl ml-2"></span>
                           </CardTitle>
-                          <CardDescription className="text-base font-semibold text-foreground mt-1">
-                            {hole.pub}
-                          </CardDescription>
-                          <p className="text-sm text-muted-foreground">{hole.drink}</p>
+                        </CardHeader>
+                      </Card>
+                    )}
+                    <Card className={`border-2 ${hole.special ? 'border-amber-500' : ''}`}>
+                      <CardHeader className="pb-3">
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <CardTitle className="text-lg flex items-center gap-2">
+                              Hul {hole.number}
+                              <span className="text-sm font-normal text-muted-foreground">
+                                Par {hole.par}
+                              </span>
+                              {hole.special && (
+                                <span className="text-lg">{getSpecialIcon(hole.special)}</span>
+                              )}
+                            </CardTitle>
+                            <CardDescription className="text-base font-semibold text-foreground mt-1">
+                              {hole.pub}
+                            </CardDescription>
+                            <p className="text-sm text-muted-foreground">{hole.drink}</p>
+                            {hole.special && (
+                              <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 mt-2">
+                                {getSpecialText(hole.special)}
+                              </p>
+                            )}
+                          </div>
+                          <div className="text-right">
+                            <div className="text-xs text-muted-foreground">Hold Score</div>
+                            <div className="text-3xl font-bold text-primary">{teamScore}</div>
+                          </div>
                         </div>
-                        <div className="text-right">
-                          <div className="text-xs text-muted-foreground">Hold Score</div>
-                          <div className="text-3xl font-bold text-primary">{teamScore}</div>
-                        </div>
-                      </div>
-                    </CardHeader>
-                  </Card>
+                      </CardHeader>
+                    </Card>
+                  </React.Fragment>
                 );
               })}
               

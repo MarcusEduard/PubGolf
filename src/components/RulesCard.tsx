@@ -1,8 +1,11 @@
 import { Beer } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 export const RulesCard = () => {
   const rules = [
+    { infraction: "Drik med højre hånd", penalty: "+1" },
+    { infraction: "Overtrædelse af special huller", penalty: "+2" },
     { infraction: "Spilt drink", penalty: "+1" },
     { infraction: "Ikke færdiggjort drink", penalty: "+3" },
     { infraction: "Falde", penalty: "+2" },
@@ -10,6 +13,34 @@ export const RulesCard = () => {
     { infraction: "Kaste op", penalty: "+3" },
     { infraction: "Ødelægge glas", penalty: "+2" },
     { infraction: "Drikke det forkerte (ikke på scorekortet)", penalty: "+3" }
+  ];
+
+  const specialRules = [
+    { 
+      icon: "🚫💧", 
+      name: "Water Hazard", 
+      description: "På disse huller må du ikke tisse!" 
+    },
+    {
+      icon: "➰",
+      name: "Strips",
+      description: "På dette hul skal alle spillere stripses sammen. Det må først tages af når der pause"
+    },
+    {
+      icon: "🍻",
+      name: "Øl-stafet",
+      description: "På dette hul er der øl-stafet. Reglerne bliver forklaret af dommeren ved hullet."
+    },
+    { 
+      icon: "❓", 
+      name: "Quiz", 
+      description: "På dette hul kommer der en quiz." 
+    },
+    {
+      icon: "𝐆",
+      name: "Split the G",
+      description: "På dette hul kan man vælge at splitte the G. Splitter man det er der -2 point."
+    }
   ];
 
   return (
@@ -22,18 +53,41 @@ export const RulesCard = () => {
           </CardTitle>
         </div>
       </CardHeader>
-      <CardContent className="space-y-2">
-        {rules.map((rule, index) => (
-          <div
-            key={index}
-            className="flex justify-between items-center py-2 border-b border-primary-foreground/20 last:border-b-0"
-          >
-            <span className="text-sm md:text-base font-medium uppercase tracking-wide">
-              {rule.infraction}
-            </span>
-            <span className="text-sm md:text-base font-bold">{rule.penalty}</span>
-          </div>
-        ))}
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <h3 className="text-lg font-bold uppercase tracking-wide mb-3">Strafpoint</h3>
+          {rules.map((rule, index) => (
+            <div
+              key={index}
+              className="flex justify-between items-center py-2 border-b border-primary-foreground/20 last:border-b-0"
+            >
+              <span className="text-sm md:text-base font-medium uppercase tracking-wide">
+                {rule.infraction}
+              </span>
+              <span className="text-sm md:text-base font-bold">{rule.penalty}</span>
+            </div>
+          ))}
+        </div>
+
+        <Separator className="bg-primary-foreground/30" />
+
+        <div className="space-y-3">
+          <h3 className="text-lg font-bold uppercase tracking-wide mb-3">Specielle Huller</h3>
+          {specialRules.map((special, index) => (
+            <div
+              key={index}
+              className="bg-primary-foreground/10 rounded-lg p-3 border border-primary-foreground/20"
+            >
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-xl">{special.icon}</span>
+                <span className="font-bold text-base">{special.name}</span>
+              </div>
+              <p className="text-xs md:text-sm opacity-90 leading-relaxed">
+                {special.description}
+              </p>
+            </div>
+          ))}
+        </div>
       </CardContent>
     </Card>
   );

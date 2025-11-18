@@ -8,8 +8,9 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ArrowLeft, AlertTriangle, Plus } from "lucide-react";
+import { ArrowLeft, AlertTriangle, Plus, Minus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 interface Team {
   id: string;
@@ -38,6 +39,7 @@ export default function AdminPenalties() {
   const [points, setPoints] = useState<string>("");
   const [reason, setReason] = useState<string>("");
   const [submitting, setSubmitting] = useState(false);
+  const [pointType, setPointType] = useState<"penalty" | "bonus">("penalty");
 
   useEffect(() => {
     checkAdminAndLoadData();
@@ -118,11 +120,14 @@ export default function AdminPenalties() {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
+      // If bonus, make points negative
+      const pointsValue = pointType === "bonus" ? -Math.abs(parseInt(points)) : Math.abs(parseInt(points));
+      
       const { error } = await supabase
         .from("penalties")
         .insert({
           team_id: selectedTeam,
-          points: parseInt(points),
+          points: pointsValue,
           reason: reason.trim(),
           created_by: user!.id,
         });
@@ -131,7 +136,7 @@ export default function AdminPenalties() {
 
       toast({
         title: "Success!",
-        description: "Strafpoint tilføjet",
+        description: pointType === "bonus" ? "Bonuspoint tilføjet" : "Strafpoint tilføjet",
       });
 
       // Reset form
@@ -197,16 +202,29 @@ export default function AdminPenalties() {
         </Button>
 
         <div className="grid lg:grid-cols-2 gap-8">
-          {/* Add Penalty Form */}
+          {/* Add Penalty/Bonus Form */}
           <Card>
             <CardHeader>
-              <CardTitle>Tilføj Strafpoint</CardTitle>
+              <CardTitle>Tilføj Point</CardTitle>
               <CardDescription>
-                Giv point til hold der bryder reglerne
+                Giv straf- eller bonuspoint til hold
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
+                <Tabs value={pointType} onValueChange={(v) => setPointType(v as "penalty" | "bonus")} className="w-full">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="penalty" className="gap-2">
+                      <Plus className="w-4 h-4" />
+                      Strafpoint
+                    </TabsTrigger>
+                    <TabsTrigger value="bonus" className="gap-2">
+                      <Minus className="w-4 h-4" />
+                      Bonuspoint
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+
                 <div className="space-y-2">
                   <Label htmlFor="team">Vælg Hold</Label>
                   <Select value={selectedTeam} onValueChange={setSelectedTeam}>
@@ -224,7 +242,9 @@ export default function AdminPenalties() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="points">Strafpoint</Label>
+                  <Label htmlFor="points">
+                    {pointType === "penalty" ? "Strafpoint" : "Bonuspoint"}
+                  </Label>
                   <Input
                     id="points"
                     type="number"
@@ -239,45 +259,60 @@ export default function AdminPenalties() {
                   <Label htmlFor="reason">Begrundelse</Label>
                   <Textarea
                     id="reason"
-                    placeholder="Hvad gjorde de forkert?"
+                    placeholder={pointType === "penalty" ? "Hvad gjorde de forkert?" : "Hvad gjorde de godt?"}
                     value={reason}
                     onChange={(e) => setReason(e.target.value)}
                     rows={3}
                   />
                 </div>
 
-                <Button type="submit" className="w-full" disabled={submitting}>
-                  <Plus className="w-4 h-4 mr-2" />
-                  {submitting ? "Tilføjer..." : "Tilføj Strafpoint"}
+                <Button 
+                  type="submit" 
+                  className="w-full" 
+                  disabled={submitting}
+                  variant={pointType === "penalty" ? "destructive" : "default"}
+                >
+                  {pointType === "penalty" ? (
+                    <Plus className="w-4 h-4 mr-2" />
+                  ) : (
+                    <Minus className="w-4 h-4 mr-2" />
+                  )}
+                  {submitting ? "Tilføjer..." : pointType === "penalty" ? "Tilføj Strafpoint" : "Tilføj Bonuspoint"}
                 </Button>
               </form>
             </CardContent>
           </Card>
 
-          {/* Penalties List */}
+          {/* Penalties/Bonus List */}
           <Card>
             <CardHeader>
               <CardTitle>Historik</CardTitle>
               <CardDescription>
-                Alle tildelte strafpoint
+                Alle tildelte straf- og bonuspoint
               </CardDescription>
             </CardHeader>
             <CardContent>
               {penalties.length === 0 ? (
                 <p className="text-center text-muted-foreground py-8">
-                  Ingen strafpoint givet endnu
+                  Ingen point givet endnu
                 </p>
               ) : (
                 <div className="space-y-3 max-h-[500px] overflow-y-auto">
                   {penalties.map((penalty) => (
                     <div
                       key={penalty.id}
-                      className="p-3 border rounded-lg bg-card"
+                      className={`p-3 border rounded-lg ${
+                        penalty.points < 0 
+                          ? 'bg-green-50 dark:bg-green-950/20 border-green-300 dark:border-green-700' 
+                          : 'bg-red-50 dark:bg-red-950/20 border-red-300 dark:border-red-700'
+                      }`}
                     >
                       <div className="flex justify-between items-start mb-1">
                         <h4 className="font-semibold">{penalty.teams.name}</h4>
-                        <span className="text-lg font-bold text-destructive">
-                          +{penalty.points}
+                        <span className={`text-lg font-bold ${
+                          penalty.points < 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                        }`}>
+                          {penalty.points > 0 ? '+' : ''}{penalty.points}
                         </span>
                       </div>
                       <p className="text-sm text-muted-foreground mb-1">
