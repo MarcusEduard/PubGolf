@@ -130,8 +130,7 @@ const Index = () => {
                 className="w-full gap-2 h-24 md:h-32 text-lg md:text-xl"
                 size="lg"
               >
-                ⚠️
-                Giv Strafpoint
+                Tildel point
               </Button>
             </div>
 

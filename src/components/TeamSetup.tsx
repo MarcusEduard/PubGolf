@@ -102,8 +102,8 @@ export const TeamSetup = ({ onTeamCreated }: TeamSetupProps) => {
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader>
-        <CardTitle className="text-xl md:text-2xl">Opret Dit Hold</CardTitle>
-        <CardDescription className="text-sm md:text-base">Indtast dit holdnavn og tilføj spillere</CardDescription>
+        <CardTitle className="text-xl md:text-2xl">Opret jeres hold</CardTitle>
+        <CardDescription className="text-sm md:text-base">Indtast jeres holdnavn og tilføj spillere</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
@@ -111,7 +111,7 @@ export const TeamSetup = ({ onTeamCreated }: TeamSetupProps) => {
             <Label htmlFor="teamName" className="text-sm md:text-base">Holdnavn</Label>
             <Input
               id="teamName"
-              placeholder="Donne er for lækker"
+              placeholder="Fx. Donne er for lækker"
               value={teamName}
               onChange={(e) => setTeamName(e.target.value)}
               required
