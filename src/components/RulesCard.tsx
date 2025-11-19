@@ -12,24 +12,36 @@ export const RulesCard = () => {
     { infraction: "Drikke det samme 2 hul i streg", penalty: "2 shots" },
     { infraction: "Kaste op", penalty: "+3" },
     { infraction: "Ødelægge glas", penalty: "+2" },
-    { infraction: "Drikke det forkerte (ikke på scorekortet)", penalty: "+3" }
+    { infraction: "Drikke det forkerte på scorekortet", penalty: "+3" }
+  ];
+
+  const bonusPoints = [
+    { action: "Klare en challenge fra tasken", bonus: "-2" },
+    { action: "Split the G", bonus: "-2" },
+    { action: "3 hole in ones i streg (alle fra holdet)", bonus: "-1" },
+    { action: "Bedste holdnavn", bonus: "-2" }
   ];
 
   const specialRules = [
     { 
-      icon: "🚫💧", 
+      icon: "💧", 
       name: "Water Hazard", 
-      description: "På disse huller må du ikke tisse!" 
+      description: "Der må kun tisses på disse huller!" 
     },
     {
       icon: "➰",
       name: "Strips",
-      description: "På dette hul skal alle spillere stripses sammen. Det må først tages af når der pause"
+      description: "Holdet bliver stripset sammen, og skal forblive stripset sammen til og med hul 4. Derefter er det muligt at blive frigjort, dette kræver dog, at man finder en saks, kniv eller lignende. Man må IKKE \"bare\" tage dem af hvis de sidder løst."
+    },
+    { 
+      icon: "🟫", 
+      name: "Gulvtæppe", 
+      description: "1 kande gulvtæppe pr. hold. Alle skal mindst tage én tår." 
     },
     {
-      icon: "🍻",
-      name: "Øl-stafet",
-      description: "På dette hul er der øl-stafet. Reglerne bliver forklaret af dommeren ved hullet."
+      icon: "🤐",
+      name: "Stum",
+      description: "Der må ikke snakkes med bartenderen overhovedet eller få andre til at bestille for sig. Denne regel må heller ikke vises oppe i baren."
     },
     { 
       icon: "❓", 
@@ -39,7 +51,7 @@ export const RulesCard = () => {
     {
       icon: "𝐆",
       name: "Split the G",
-      description: "På dette hul kan man vælge at splitte the G. Splitter man det er der -2 point."
+      description: "På dette hul kan man vælge at splitte the G."
     }
   ];
 
@@ -65,6 +77,23 @@ export const RulesCard = () => {
                 {rule.infraction}
               </span>
               <span className="text-sm md:text-base font-bold">{rule.penalty}</span>
+            </div>
+          ))}
+        </div>
+
+        <Separator className="bg-primary-foreground/30" />
+
+        <div className="space-y-2">
+          <h3 className="text-lg font-bold uppercase tracking-wide mb-3">Bonuspoint</h3>
+          {bonusPoints.map((bonus, index) => (
+            <div
+              key={index}
+              className="flex justify-between items-center py-2 border-b border-primary-foreground/20 last:border-b-0"
+            >
+              <span className="text-sm md:text-base font-medium uppercase tracking-wide">
+                {bonus.action}
+              </span>
+              <span className="text-sm md:text-base font-bold text-green-300">{bonus.bonus}</span>
             </div>
           ))}
         </div>

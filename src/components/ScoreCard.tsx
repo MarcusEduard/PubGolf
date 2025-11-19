@@ -27,24 +27,26 @@ export const ScoreCard = ({ teamId, teamName, onLogout }: ScoreCardProps) => {
   const [loading, setLoading] = useState(true);
 
   const holes = [
-    { number: 1, pub: "Die Kleine Bierstube", drink: "Fadøl", par: 3, special: null },
-    { number: 2, pub: "Kurts mor", drink: "Vodka Juice", par: 2, special: "water-hazard" },
-    { number: 3, pub: "Bodegaen", drink: "Aarhus bomb", par: 2, special: "strips" },
-    { number: 4, pub: "Thorkilds", drink: "Long Island", par: 3, special: "water-hazard" },
-    { number: 5, pub: "Snevringen", drink: "dåse øl", par: 2, special: "øl-staffet" },
-    { number: 6, pub: "Tanken", drink: "Pickle shot", par: 1, special: "water-hazard" },
-    { number: 7, pub: "Tokio bar", drink: "Valgri genstand (ikke shots)", par: 2, special: "quiz" },
-    { number: 8, pub: "Vinstuen", drink: "Æselspark", par: 1, special: "water-hazard" },
-    { number: 9, pub: "Sherlock Holmnes", drink: "Guiness", par: 3, special: "split-the-g" },
+    { number: 1, pub: "Die Kleine Bierstube", drink: "Fadøl", par: 3, special: null, waterHazard: false },
+    { number: 2, pub: "Kurts mor", drink: "Vodka Juice", par: 2, special: "strips", waterHazard: true },
+    { number: 3, pub: "Bodegaen", drink: "Gulvtæppe", par: 2, special: "gt", waterHazard: false },
+    { number: 4, pub: "Thorkilds", drink: "Long Island", par: 3, special: null, waterHazard: true },
+    { number: 5, pub: "Snevringen", drink: "dåse øl", par: 2, special: "øl-staffet", waterHazard: false },
+    { number: 6, pub: "Tanken", drink: "Pickle shot", par: 1, special: "ikke-snakke", waterHazard: true },
+    { number: 7, pub: "Tokio bar", drink: "Valgri genstand (ikke shots)", par: 2, special: "quiz", waterHazard: false },
+    { number: 8, pub: "Vinstuen", drink: "Æselspark", par: 1, special: null, waterHazard: true },
+    { number: 9, pub: "Sherlock Holmnes", drink: "Guiness", par: 3, special: "split-the-g", waterHazard: false },
   ];
 
   const getSpecialIcon = (special: string | null) => {
     switch (special) {
-      case "water-hazard":
+      case "ikke-snakke":
         return "";
       case "quiz":
         return "";
       case "strips":
+        return "";
+      case "gt":
         return "";
       case "øl-staffet":
         return "";
@@ -57,12 +59,14 @@ export const ScoreCard = ({ teamId, teamName, onLogout }: ScoreCardProps) => {
 
   const getSpecialText = (special: string | null) => {
     switch (special) {
-      case "water-hazard":
-        return "Water Hazard";
+      case "ikke-snakke":
+        return "Stum";
       case "quiz":
         return "Quiz";
       case "strips":
         return "Strips";
+      case "gt":
+        return "Gulvtæppe";
       case "øl-staffet":
         return "Øl-staffet";
       case "split-the-g":
@@ -221,28 +225,32 @@ export const ScoreCard = ({ teamId, teamName, onLogout }: ScoreCardProps) => {
                       </CardContent>
                     </Card>
                   )}
-                  <Card key={hole.number} className={`border-2 ${hole.special ? 'border-amber-500' : ''}`}>
+                  <Card key={hole.number} className={`border-2 ${hole.special || hole.waterHazard ? 'border-amber-500' : ''}`}>
                     <CardHeader className="pb-3">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
-                          <CardTitle className="text-lg flex items-center gap-2">
+                          <CardTitle className="text-lg flex items-center gap-2 flex-wrap">
                             Hul {hole.number}
                             <span className="text-sm font-normal text-muted-foreground">
                               Par {hole.par}
                             </span>
+                            {hole.waterHazard && (
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-xs font-semibold text-blue-700 dark:text-blue-300">
+                                <span></span>
+                                <span>Water Hazard</span>
+                              </span>
+                            )}
                             {hole.special && (
-                              <span className="text-lg">{getSpecialIcon(hole.special)}</span>
+                              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-xs font-semibold text-amber-700 dark:text-amber-300">
+                                <span>{getSpecialIcon(hole.special)}</span>
+                                <span>{getSpecialText(hole.special)}</span>
+                              </span>
                             )}
                           </CardTitle>
                           <CardDescription className="text-base font-semibold text-foreground mt-1">
                             {hole.pub}
                           </CardDescription>
                           <p className="text-sm text-muted-foreground">{hole.drink}</p>
-                          {hole.special && (
-                            <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 mt-2">
-                              {getSpecialText(hole.special)}
-                            </p>
-                          )}
                         </div>
                       </div>
                     </CardHeader>
@@ -367,28 +375,32 @@ export const ScoreCard = ({ teamId, teamName, onLogout }: ScoreCardProps) => {
                         </CardHeader>
                       </Card>
                     )}
-                    <Card className={`border-2 ${hole.special ? 'border-amber-500' : ''}`}>
+                    <Card className={`border-2 ${hole.special || hole.waterHazard ? 'border-amber-500' : ''}`}>
                       <CardHeader className="pb-3">
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
-                            <CardTitle className="text-lg flex items-center gap-2">
+                            <CardTitle className="text-lg flex items-center gap-2 flex-wrap">
                               Hul {hole.number}
                               <span className="text-sm font-normal text-muted-foreground">
                                 Par {hole.par}
                               </span>
+                              {hole.waterHazard && (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-xs font-semibold text-blue-700 dark:text-blue-300">
+                                  <span></span>
+                                  <span>Water Hazard</span>
+                                </span>
+                              )}
                               {hole.special && (
-                                <span className="text-lg">{getSpecialIcon(hole.special)}</span>
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/30 text-xs font-semibold text-amber-700 dark:text-amber-300">
+                                  <span>{getSpecialIcon(hole.special)}</span>
+                                  <span>{getSpecialText(hole.special)}</span>
+                                </span>
                               )}
                             </CardTitle>
                             <CardDescription className="text-base font-semibold text-foreground mt-1">
                               {hole.pub}
                             </CardDescription>
                             <p className="text-sm text-muted-foreground">{hole.drink}</p>
-                            {hole.special && (
-                              <p className="text-xs font-semibold text-amber-600 dark:text-amber-400 mt-2">
-                                {getSpecialText(hole.special)}
-                              </p>
-                            )}
                           </div>
                           <div className="text-right">
                             <div className="text-xs text-muted-foreground">Hold Score</div>
