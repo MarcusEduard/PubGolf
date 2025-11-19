@@ -81,9 +81,9 @@ const Auth = () => {
       
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold">🏌️ Pub Golf</CardTitle>
+          <CardTitle className="text-3xl font-bold">🏌️ Donnes Pub Golf</CardTitle>
           <CardDescription>
-            {isLogin ? "Velkommen tilbage!" : "Opret din konto"}
+            {isLogin ? "Velkommen til Donnes Pub Golf!" : "Opret din konto"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -112,7 +112,7 @@ const Auth = () => {
               />
             </div>
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Indlæser..." : isLogin ? "Log ind" : "Opret konto"}
+              {loading ? "Indlæser lige..." : isLogin ? "Log ind" : "Opret konto"}
             </Button>
             <Button
               type="button"
@@ -121,8 +121,8 @@ const Auth = () => {
               onClick={() => setIsLogin(!isLogin)}
             >
               {isLogin
-                ? "Har du ikke en konto? Opret en her"
-                : "Har du allerede en konto? Log ind"}
+                ? "Har du ikke oprettet et hold? Opret et her"
+                : "Har du allerede et hold? Log ind"}
             </Button>
           </form>
         </CardContent>

@@ -106,7 +106,7 @@ const Index = () => {
 
         <div className="container mx-auto py-8 px-4">
           <div className="flex justify-between items-center mb-8">
-            <h1 className="text-2xl md:text-3xl font-bold">Admin Panel</h1>
+            <h1 className="text-2xl md:text-3xl font-bold">Dommerpanel</h1>
             <Button variant="outline" onClick={handleLogout} size="sm">
               Log ud
             </Button>

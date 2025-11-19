@@ -198,7 +198,7 @@ export default function AdminPenalties() {
           className="gap-2 mb-8"
         >
           <ArrowLeft className="w-4 h-4" />
-          Tilbage til Admin Panel
+          Tilbage til dommerpanelet
         </Button>
 
         <div className="grid lg:grid-cols-2 gap-8">
