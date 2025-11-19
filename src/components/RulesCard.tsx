@@ -51,7 +51,7 @@ export const RulesCard = () => {
     {
       icon: "𝐆",
       name: "Split the G",
-      description: "På dette hul kan man vælge at splitte the G."
+      description: "På dette hul kan man vælge at splitte the G. Det er dog valgfrit, så der uddeles ikke strafpoint for ikke at gøre det. Inden man drikke skal man sige om man splitter eller ej."
     }
   ];
 
