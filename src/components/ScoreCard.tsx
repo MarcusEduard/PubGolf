@@ -34,7 +34,7 @@ export const ScoreCard = ({ teamId, teamName, onLogout }: ScoreCardProps) => {
     { number: 5, pub: "Snevringen", drink: "dåse øl", par: 2, special: "øl-staffet", waterHazard: false },
     { number: 6, pub: "Tanken", drink: "Pickle shot", par: 1, special: "ikke-snakke", waterHazard: true },
     { number: 7, pub: "Tokio bar", drink: "Valgri genstand (ikke shots)", par: 2, special: "quiz", waterHazard: false },
-    { number: 8, pub: "Vinstuen", drink: "Æselspark", par: 1, special: null, waterHazard: true },
+    { number: 8, pub: "Vinstuen", drink: "Æselspark + 1 øl", par: 1, special: "no-hands", waterHazard: true },
     { number: 9, pub: "Sherlock Holmnes", drink: "Guiness", par: 3, special: "split-the-g", waterHazard: false },
   ];
 
@@ -49,6 +49,8 @@ export const ScoreCard = ({ teamId, teamName, onLogout }: ScoreCardProps) => {
       case "gt":
         return "";
       case "øl-staffet":
+        return "";
+      case "no-hands":
         return "";
       case "split-the-g":
         return "";
@@ -69,6 +71,8 @@ export const ScoreCard = ({ teamId, teamName, onLogout }: ScoreCardProps) => {
         return "Gulvtæppe";
       case "øl-staffet":
         return "Øl-staffet";
+      case "no-hands":
+        return "No Hands";
       case "split-the-g":
         return "Split the G";
       default:

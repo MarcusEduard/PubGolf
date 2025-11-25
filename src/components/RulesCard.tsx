@@ -49,6 +49,11 @@ export const RulesCard = () => {
       description: "På dette hul kommer der en quiz." 
     },
     {
+      icon: "🙌",
+      name: "No Hands",
+      description: "Du må ikke bruge dine egne hænder på dette hul."
+    },
+    {
       icon: "𝐆",
       name: "Split the G",
       description: "På dette hul kan man vælge at splitte the G. Det er dog valgfrit, så der uddeles ikke strafpoint for ikke at gøre det. Inden man drikke skal man sige om man splitter eller ej."
