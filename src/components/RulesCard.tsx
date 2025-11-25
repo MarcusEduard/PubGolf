@@ -6,19 +6,20 @@ export const RulesCard = () => {
   const rules = [
     { infraction: "Drik med højre hånd", penalty: "+1" },
     { infraction: "Overtrædelse af special huller", penalty: "+2" },
-    { infraction: "Spilt drink", penalty: "+1" },
+    { infraction: "Spildt drink", penalty: "+1" },
     { infraction: "Ikke færdiggjort drink", penalty: "+3" },
     { infraction: "Falde", penalty: "+2" },
     { infraction: "Drikke det samme 2 hul i streg", penalty: "2 shots" },
     { infraction: "Kaste op", penalty: "+3" },
     { infraction: "Ødelægge glas", penalty: "+2" },
-    { infraction: "Drikke det forkerte på scorekortet", penalty: "+3" }
+    { infraction: "Drikke det forkerte på scorekortet", penalty: "+3" },
+    { infraction: "Blive smidt ud", penalty: "+3" }
   ];
 
   const bonusPoints = [
     { action: "Klare en challenge fra tasken", bonus: "-2" },
-    { action: "Split the G", bonus: "-2" },
-    { action: "3 hole in ones i streg (alle fra holdet)", bonus: "-1" },
+    { action: "Split the G", bonus: "-3" },
+    { action: "3 hole in ones i streg (alle fra holdet)", bonus: "-2" },
     { action: "Bedste holdnavn", bonus: "-2" }
   ];
 

@@ -17,11 +17,13 @@ const Index = () => {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
+    const startTime = Date.now();
+    
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
         setUser(session.user);
         setIsAdmin(session.user.user_metadata?.role === 'admin');
-        loadTeam(session.user.id);
+        loadTeam(session.user.id, startTime);
       } else {
         navigate("/auth");
       }
@@ -29,10 +31,11 @@ const Index = () => {
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (_event, session) => {
+        const startTime = Date.now();
         if (session?.user) {
           setUser(session.user);
           setIsAdmin(session.user.user_metadata?.role === 'admin');
-          loadTeam(session.user.id);
+          loadTeam(session.user.id, startTime);
         } else {
           navigate("/auth");
         }
@@ -42,7 +45,10 @@ const Index = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
-  const loadTeam = async (userId: string) => {
+  const loadTeam = async (userId: string, startTime?: number) => {
+    const minLoadTime = 2000; // 2 sekunder
+    const actualStartTime = startTime || Date.now();
+    
     try {
       const { data, error } = await supabase
         .from("teams")
@@ -59,7 +65,13 @@ const Index = () => {
     } catch (error) {
       console.error("Error loading team:", error);
     } finally {
-      setLoading(false);
+      // Beregn hvor lang tid der er gået, og vent resten af de 2 sekunder
+      const elapsedTime = Date.now() - actualStartTime;
+      const remainingTime = Math.max(0, minLoadTime - elapsedTime);
+      
+      setTimeout(() => {
+        setLoading(false);
+      }, remainingTime);
     }
   };
 

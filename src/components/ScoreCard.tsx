@@ -183,7 +183,7 @@ export const ScoreCard = ({ teamId, teamName, onLogout }: ScoreCardProps) => {
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Indlæser bare lige...</CardTitle>
+          <CardTitle>Mmmmmmmmhhhhhh...</CardTitle>
         </CardHeader>
       </Card>
     );
@@ -225,7 +225,7 @@ export const ScoreCard = ({ teamId, teamName, onLogout }: ScoreCardProps) => {
                     <Card className="border-2 border-blue-500 bg-blue-50 dark:bg-blue-950/20">
                       <CardContent className="py-4 text-center">
                         <p className="text-lg font-bold text-blue-600 dark:text-blue-400">PAUSE</p>
-                        <p className="text-sm text-muted-foreground mt-1">Tag en pause før næste runde</p>
+                        <p className="text-sm text-muted-foreground mt-1">Få noget mad og tag et holdbillede</p>
                       </CardContent>
                     </Card>
                   )}
